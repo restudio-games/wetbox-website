@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>Wetbox Engine</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/Rh3BTjRM/cube.png">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Gravitas+One&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -81,68 +84,41 @@
       padding: 90px 30px;
       min-height: 100vh;
       color: #fff;
+      overflow: hidden;
     }
 
     main::before {
       content: "";
       position: absolute;
       top: 0; left: 0;
-      width: 100%; height: 120%;
+      width: 100%; 
+      height: 100%;
       background: url('https://i.postimg.cc/tC8DmLXg/sponza3d-test-on-wetbox.png') center/cover no-repeat;
-      filter: blur(10px) brightness(0.5);
+      filter: blur(6px) brightness(0.4);
+      z-index: -1;
+      transform: scale(1.1);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%);
       z-index: -1;
     }
 
-    main h2 { font-size: 48px; margin-bottom: 24px; font-family: 'Gravitas One', cursive; }
-    main p { font-size: 20px; max-width: 760px; line-height: 1.7; }
-
-    /* ===== قسم GODOT VS WETBOX ===== */
-    .comparison-section {
-      max-width: 960px;
-      margin: 60px auto;
-      text-align: center;
-      color: #fff;
-    }
-
-    .comparison-section h2 {
+    main h2 { 
+      font-size: 52px; 
+      margin-bottom: 24px; 
       font-family: 'Gravitas One', cursive;
-      font-size: 42px;
-      margin-bottom: 30px;
-      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
     }
-
-    .comparison-logos {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 120px;
-      margin-bottom: 30px;
+    main p { 
+      font-size: 22px; 
+      max-width: 760px; 
+      line-height: 1.7;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
     }
-
-    .comparison-logos img { height: 100px; width: auto; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 40px;
-      background: #fff;
-      color: #000;
-    }
-
-    table th, table td {
-      border: 1px solid #ccc;
-      padding: 12px 15px;
-      text-align: center;
-    }
-
-    table th {
-      background: #000;
-      color: #fff;
-      font-weight: 600;
-    }
-
-    table tr:nth-child(even) { background: #f9f9f9; }
-    table tr:hover { background: #e0e0e0; }
 
     /* ===== الشريط السفلي ===== */
     footer {
@@ -319,53 +295,13 @@
   </header>
 
   <main>
+    <div class="hero-overlay"></div>
     <h2>Build Games. Without Limits.</h2>
     <p>
       Wetbox Engine is a no-compromise game engine built for developers
       who want full control, real performance, and zero hand-holding.
     </p>
   </main>
-
-  <!-- ===== قسم GODOT VS WETBOX ===== -->
-  <section class="comparison-section">
-    <h2>GODOT VS WETBOX</h2>
-    <div class="comparison-logos">
-      <img src="https://i.postimg.cc/gk5GJqWN/GODOT.webp" alt="Godot Logo">
-      <img src="https://i.postimg.cc/Rh3BTjRM/cube.png" alt="Wetbox Logo">
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Feature</th>
-          <th>Godot</th>
-          <th>Wetbox</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>License</td>
-          <td>MIT Open Source</td>
-          <td>Aurelia License (Restudio)</td>
-        </tr>
-        <tr>
-          <td>Platform Support</td>
-          <td>Windows, macOS, Linux, HTML5, Mobile</td>
-          <td>Windows, macOS, Linux (VS code)</td>
-        </tr>
-        <tr>
-          <td>Post Processing</td>
-          <td>Limited Built-in Effects</td>
-          <td>Made with code</td>
-        </tr>
-        <tr>
-          <td>Target Users</td>
-          <td>Indie developers, hobbyists</td>
-          <td>Serious developers, pro-level control</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
 
   <footer>
     <div class="footer-logo">
@@ -599,9 +535,6 @@
         aboutModal.classList.remove('active');
       }
     });
-
-    // إضافة رابط Download (مضمن بالفعل في HTML)
-    // downloadLink موجود بالفعل مع الرابط الصحيح
   </script>
 
 </body>
