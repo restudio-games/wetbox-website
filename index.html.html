@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wetbox Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Gravitas+One&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-yH6N1Kf3G5O8M4I6t0w6Xnv+Y9zwN4pX3N6zv9G8/Vf2+6fUx1F+PO5r4w4Vx5/u+M39P7XbU+hAG2eS/vbxqA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Red Hat Display', sans-serif;
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    /* ===== الشريط العلوي ===== */
+    header {
+      background: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      border-bottom: 1px solid #ddd;
+      height: 190px;
+      padding: 0 40px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .brand {
+      display: flex;
+      align-items: flex-end;
+      height: 100%;
+      gap: 30px;
+      padding-bottom: 25px;
+    }
+
+    .studio-bar {
+      background: #000;
+      width: 90px;
+      height: 100%;
+      margin-left: 25px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 18px;
+    }
+
+    .studio-bar img { width: 58px; height: auto; display: block; }
+    .logo img { height: 135px; width: auto; display: block; }
+
+    nav { display: flex; align-items: center; }
+    nav a {
+      margin-left: 28px;
+      text-decoration: none;
+      color: #000;
+      font-weight: 600;
+      font-size: 17px;
+      cursor: pointer;
+    }
+    nav a:hover { text-decoration: underline; }
+
+    /* ===== المحتوى الرئيسي ===== */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 90px 30px;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    main::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 120%;
+      background: url('https://i.postimg.cc/tC8DmLXg/sponza3d-test-on-wetbox.png') center/cover no-repeat;
+      filter: blur(10px) brightness(0.5);
+      z-index: -1;
+    }
+
+    main h2 { font-size: 48px; margin-bottom: 24px; font-family: 'Gravitas One', cursive; }
+    main p { font-size: 20px; max-width: 760px; line-height: 1.7; }
+
+    /* ===== قسم GODOT VS WETBOX ===== */
+    .comparison-section {
+      max-width: 960px;
+      margin: 60px auto;
+      text-align: center;
+      color: #fff;
+    }
+
+    .comparison-section h2 {
+      font-family: 'Gravitas One', cursive;
+      font-size: 42px;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    .comparison-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 120px;
+      margin-bottom: 30px;
+    }
+
+    .comparison-logos img { height: 100px; width: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
+      background: #fff;
+      color: #000;
+    }
+
+    table th, table td {
+      border: 1px solid #ccc;
+      padding: 12px 15px;
+      text-align: center;
+    }
+
+    table th {
+      background: #000;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    table tr:nth-child(even) { background: #f9f9f9; }
+    table tr:hover { background: #e0e0e0; }
+
+    /* ===== الشريط السفلي ===== */
+    footer {
+      background: #000;
+      color: #fff;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Red Hat Display', sans-serif;
+    }
+
+    footer .footer-logo img { height: 40px; width: auto; }
+    footer .social-links { display: flex; gap: 20px; }
+    footer .social-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.2s;
+    }
+    footer .social-links a:hover { transform: scale(1.1); }
+    footer .social-links i { font-size: 18px; }
+
+    /* ===== الأنماط الجديدة للنوافذ المنبثقة ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      width: 90%;
+      max-width: 900px;
+      max-height: 80vh;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      background: #000;
+      color: white;
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-family: 'Gravitas One', cursive;
+      font-size: 32px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      padding: 0;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-body {
+      padding: 30px;
+      overflow-y: auto;
+      max-height: calc(80vh - 80px);
+      color: #333;
+    }
+
+    .docs-section, .about-section {
+      margin-bottom: 30px;
+    }
+
+    .docs-section h3, .about-section h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #000;
+      border-bottom: 2px solid #000;
+      padding-bottom: 5px;
+    }
+
+    .docs-section h4 {
+      font-size: 20px;
+      margin: 20px 0 10px;
+      color: #333;
+    }
+
+    .docs-section ul, .docs-section ol {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .docs-section li {
+      margin-bottom: 8px;
+    }
+
+    .library-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+
+    .library-table th, .library-table td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .library-table th {
+      background: #f0f0f0;
+      font-weight: 600;
+    }
+
+    .library-table a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    .library-table a:hover {
+      text-decoration: underline;
+    }
+
+    .note-box {
+      background: #fff8e1;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .about-section p {
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="studio-bar">
+        <img src="https://i.postimg.cc/9FCGkCTH/restudio-profile.png" alt="Restudio Games">
+      </div>
+      <div class="logo">
+        <img src="https://i.postimg.cc/Rh3BTjRM/cube.png" alt="Wetbox Engine Logo">
+      </div>
+    </div>
+    <nav>
+      <a id="docsLink" href="#">Docs</a>
+      <a id="downloadLink" href="https://restudio-games.itch.io/wetbox-game-engine" target="_blank">Download</a>
+      <a id="aboutLink" href="#">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Build Games. Without Limits.</h2>
+    <p>
+      Wetbox Engine is a no-compromise game engine built for developers
+      who want full control, real performance, and zero hand-holding.
+    </p>
+  </main>
+
+  <!-- ===== قسم GODOT VS WETBOX ===== -->
+  <section class="comparison-section">
+    <h2>GODOT VS WETBOX</h2>
+    <div class="comparison-logos">
+      <img src="https://i.postimg.cc/gk5GJqWN/GODOT.webp" alt="Godot Logo">
+      <img src="https://i.postimg.cc/Rh3BTjRM/cube.png" alt="Wetbox Logo">
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Godot</th>
+          <th>Wetbox</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>License</td>
+          <td>MIT Open Source</td>
+          <td>Aurelia License (Restudio)</td>
+        </tr>
+        <tr>
+          <td>Platform Support</td>
+          <td>Windows, macOS, Linux, HTML5, Mobile</td>
+          <td>Windows, macOS, Linux (VS code)</td>
+        </tr>
+        <tr>
+          <td>Post Processing</td>
+          <td>Limited Built-in Effects</td>
+          <td>Made with code</td>
+        </tr>
+        <tr>
+          <td>Target Users</td>
+          <td>Indie developers, hobbyists</td>
+          <td>Serious developers, pro-level control</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <div class="footer-logo">
+      <img src="https://i.postimg.cc/8CxvmrL8/swrh-restudio.png" alt="Restudio Logo">
+    </div>
+    <div class="social-links">
+      <a href="https://github.com/restudio-games"><i class="fab fa-github"></i> GITHUB</a>
+      <a href="https://www.youtube.com/@RESTUDIO_channel"><i class="fab fa-youtube"></i> YOUTUBE</a>
+      <a href="https://www.instagram.com/restudio_games/"><i class="fab fa-instagram"></i> INSTAGRAM</a>
+      <a href="https://x.com/RESTUDIO_GAMES"><i class="fab fa-x-twitter"></i> X</a>
+      <a href="https://restudio-games.itch.io/"><i class="fa-brands fa-itch-io"></i> ITCH.IO</a>
+    </div>
+  </footer>
+
+  <!-- ===== نافذة Docs المنبثقة ===== -->
+  <div id="docsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Wetbox Docs</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="docs-section">
+          <h3>System Compatibility</h3>
+          <ul>
+            <li>Windows</li>
+            <li>macOS</li>
+            <li>Linux</li>
+          </ul>
+          
+          <div class="note-box">
+            <p><strong>Note:</strong> Wetbox requires VS Code as the development environment. Libraries must be installed and configured manually.</p>
+          </div>
+        </div>
+
+        <div class="docs-section">
+          <h3>2D & 3D Libraries</h3>
+          <p>Wetbox does not include libraries; developers must install and configure them manually.</p>
+          
+          <table class="library-table">
+            <thead>
+              <tr>
+                <th>Library</th>
+                <th>Platform</th>
+                <th>Description</th>
+                <th>Official Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>PixiJS</td>
+                <td>Web</td>
+                <td>2D graphics engine for interactive games and apps</td>
+                <td><a href="https://pixijs.com" target="_blank">pixijs.com</a></td>
+              </tr>
+              <tr>
+                <td>WGPU</td>
+                <td>Desktop</td>
+                <td>Modern graphics API for 2D & 3D rendering</td>
+                <td><a href="https://wgpu.rs" target="_blank">wgpu.rs</a></td>
+              </tr>
+              <tr>
+                <td>Vulkan</td>
+                <td>Desktop</td>
+                <td>Low-level 3D rendering API with full GPU control</td>
+                <td><a href="https://vulkan.org" target="_blank">vulkan.org</a></td>
+              </tr>
+              <tr>
+                <td>SFML</td>
+                <td>Desktop</td>
+                <td>Lightweight 2D library supporting rendering, audio, and input</td>
+                <td><a href="https://www.sfml-dev.org" target="_blank">sfml-dev.org</a></td>
+              </tr>
+              <tr>
+                <td>SDL</td>
+                <td>Desktop</td>
+                <td>Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics</td>
+                <td><a href="https://www.libsdl.org" target="_blank">libsdl.org</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="docs-section">
+          <h3>Physics Engines</h3>
+          <table class="library-table">
+            <thead>
+              <tr>
+                <th>Engine</th>
+                <th>Platform</th>
+                <th>Description</th>
+                <th>Official Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Bullet Physics</td>
+                <td>Desktop</td>
+                <td>3D physics simulation</td>
+                <td><a href="https://github.com/bulletphysics/bullet3" target="_blank">GitHub</a></td>
+              </tr>
+              <tr>
+                <td>Box2D</td>
+                <td>Desktop</td>
+                <td>2D physics simulation</td>
+                <td><a href="https://box2d.org" target="_blank">box2d.org</a></td>
+              </tr>
+              <tr>
+                <td>Planck.js</td>
+                <td>Web (2D)</td>
+                <td>JavaScript version of Box2D for web games</td>
+                <td><a href="https://piqnt.com/planck.js/" target="_blank">piqnt.com/planck.js</a></td>
+              </tr>
+              <tr>
+                <td>Havok (Babylon.js plugin)</td>
+                <td>Web (3D)</td>
+                <td>Physics engine integration with Babylon.js</td>
+                <td><a href="https://doc.babylonjs.com/features/featuresDeepDive/physics/havokPlugin" target="_blank">Docs</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="docs-section">
+          <h3>Web & VR/AR Support</h3>
+          <table class="library-table">
+            <thead>
+              <tr>
+                <th>Technology</th>
+                <th>Platform</th>
+                <th>Description</th>
+                <th>Official Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Babylon.js</td>
+                <td>Web</td>
+                <td>3D Web engine</td>
+                <td><a href="https://babylonjs.com" target="_blank">babylonjs.com</a></td>
+              </tr>
+              <tr>
+                <td>React</td>
+                <td>Web</td>
+                <td>UI framework for web applications</td>
+                <td><a href="https://react.dev" target="_blank">react.dev</a></td>
+              </tr>
+              <tr>
+                <td>WebXR</td>
+                <td>Web</td>
+                <td>Web-based VR/AR API</td>
+                <td><a href="https://immersive-web.github.io/webxr/" target="_blank">Docs</a></td>
+              </tr>
+              <tr>
+                <td>OpenXR</td>
+                <td>Desktop</td>
+                <td>VR/AR API for multiple platforms</td>
+                <td><a href="https://www.khronos.org/openxr/" target="_blank">Official Site</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== نافذة About المنبثقة ===== -->
+  <div id="aboutModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>About Wetbox</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="about-section">
+          <p>
+            Wetbox Engine is a game development framework based entirely on VS Code and aimed at serious game developers. 
+            The engine has no built-in libraries; developers install and configure the libraries themselves according to their project needs.
+          </p>
+          <p>
+            Restudio Games' role is to prepare these libraries to make getting started easier, but they are not part of the engine itself.
+          </p>
+          <p>
+            This approach gives developers full control over their game's architecture, performance, and dependencies, allowing for 
+            highly optimized and tailored game development experiences without the overhead of unnecessary features.
+          </p>
+          <p>
+            Wetbox is designed for developers who want to understand every aspect of their game's technical implementation 
+            and prefer to work with raw, unabstracted libraries and APIs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // عناصر DOM
+    const docsLink = document.getElementById('docsLink');
+    const aboutLink = document.getElementById('aboutLink');
+    const downloadLink = document.getElementById('downloadLink');
+    const docsModal = document.getElementById('docsModal');
+    const aboutModal = document.getElementById('aboutModal');
+    const closeButtons = document.querySelectorAll('.close-btn');
+
+    // فتح نافذة Docs
+    docsLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      docsModal.classList.add('active');
+    });
+
+    // فتح نافذة About
+    aboutLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      aboutModal.classList.add('active');
+    });
+
+    // إغلاق النوافذ عند النقر على زر الإغلاق
+    closeButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        docsModal.classList.remove('active');
+        aboutModal.classList.remove('active');
+      });
+    });
+
+    // إغلاق النوافذ عند النقر خارج المحتوى
+    window.addEventListener('click', function(e) {
+      if (e.target === docsModal) {
+        docsModal.classList.remove('active');
+      }
+      if (e.target === aboutModal) {
+        aboutModal.classList.remove('active');
+      }
+    });
+
+    // إضافة رابط Download (مضمن بالفعل في HTML)
+    // downloadLink موجود بالفعل مع الرابط الصحيح
+  </script>
+
+</body>
+</html>
