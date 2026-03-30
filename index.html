@@ -2,528 +2,763 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Wetbox Engine</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <title>Wetbox Engine — Professional Game Framework</title>
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="https://i.postimg.cc/Rh3BTjRM/cube.png">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Gravitas+One&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome CDN -->
+  <!-- Google Fonts: Inter + Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Font Awesome (لأيقونات أنظمة التشغيل فقط) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      font-family: 'Red Hat Display', sans-serif;
-      background: #f4f4f4;
-      color: #333;
-    }
-
-    /* ===== الشريط العلوي (بدون studio bar) ===== */
-    header {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #ffffff;
-      display: flex;
-      justify-content: space-between;
-      align-items: stretch;
-      border-bottom: 1px solid #ddd;
-      height: 190px;
-      padding: 0 40px;
-      z-index: 10;
-      position: relative;
+      color: #1a1a1a;
+      line-height: 1.5;
+      scroll-behavior: smooth;
     }
 
-    .brand {
+    /* ===== HEADER - Flax Engine style ===== */
+    .site-header {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       display: flex;
-      align-items: flex-end;
-      height: 100%;
-      gap: 30px;
-      padding-bottom: 25px;
-    }
-
-    /* تم إزالة .studio-bar بالكامل */
-
-    .logo img { height: 135px; width: auto; display: block; }
-
-    nav { display: flex; align-items: center; }
-    nav a {
-      margin-left: 28px;
-      text-decoration: none;
-      color: #000;
-      font-weight: 600;
-      font-size: 17px;
-      cursor: pointer;
-    }
-    nav a:hover { text-decoration: underline; }
-
-    /* ===== المحتوى الرئيسي ===== */
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      position: relative;
-      padding: 90px 30px;
-      min-height: 100vh;
-      color: #fff;
-      overflow: hidden;
+      justify-content: space-between;
+      padding: 0 64px;
+      height: 88px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    main::before {
+    .logo-area img {
+      height: 100px;
+      width: auto;
+      transition: transform 0.2s ease;
+    }
+
+    .logo-area img:hover {
+      transform: scale(1.02);
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .main-nav a {
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #2c2c2c;
+      letter-spacing: 0.3px;
+      transition: color 0.2s;
+    }
+
+    .main-nav a:hover {
+      color: #0066cc;
+    }
+
+    .download-nav {
+      background: #0066cc;
+      color: white !important;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+    }
+
+    .download-nav:hover {
+      background: #0052a3;
+      color: white !important;
+    }
+
+    /* ===== HERO SECTION - مع خلفية السيارة ===== */
+    .hero {
+      position: relative;
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 64px;
+      background: url('https://i.postimg.cc/Jz9JNXbf/a-realistic-3D-car.png') center center / cover no-repeat;
+      background-attachment: fixed;
+    }
+
+    .hero::before {
       content: "";
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; 
-      height: 100%;
-      background: url('https://i.postimg.cc/fL1TP6Km/a-realistic-3D-car.png') center/cover no-repeat;
-      filter: blur(6px) brightness(0.4);
-      z-index: -1;
-      transform: scale(1.1);
-    }
-
-    .hero-overlay {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%);
-      z-index: -1;
-    }
-
-    main h2 { 
-      font-size: 52px; 
-      margin-bottom: 24px; 
-      font-family: 'Gravitas One', cursive;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-    }
-    main p { 
-      font-size: 22px; 
-      max-width: 760px; 
-      line-height: 1.7;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-    }
-
-    /* ===== الشريط السفلي ===== */
-    footer {
-      background: #000;
-      color: #fff;
-      padding: 16px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'Red Hat Display', sans-serif;
-    }
-
-    footer .footer-logo img { height: 40px; width: auto; }
-    footer .social-links { display: flex; gap: 20px; }
-    footer .social-links a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: transform 0.2s;
-    }
-    footer .social-links a:hover { transform: scale(1.1); }
-    footer .social-links i { font-size: 18px; }
-
-    /* ===== الأنماط الجديدة للنوافذ المنبثقة ===== */
-    .modal {
-      display: none;
-      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.65) 100%);
+      z-index: 1;
     }
 
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: white;
-      width: 90%;
+    .hero-content {
+      position: relative;
+      z-index: 2;
       max-width: 900px;
-      max-height: 80vh;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      margin: 0 auto;
     }
 
-    .modal-header {
-      background: #000;
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
       color: white;
-      padding: 20px 30px;
-      display: flex;
-      justify-content: space-between;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .hero .tagline {
+      font-size: 1.3rem;
+      color: rgba(255,255,255,0.9);
+      max-width: 600px;
+      margin: 0 auto 12px;
+      font-weight: 500;
+    }
+
+    .hero .subhead {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 550px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
       align-items: center;
-    }
-
-    .modal-header h2 {
-      font-family: 'Gravitas One', cursive;
-      font-size: 32px;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
+      gap: 10px;
+      background: #0066cc;
       color: white;
-      font-size: 28px;
-      cursor: pointer;
-      padding: 0;
-      width: 40px;
-      height: 40px;
+      padding: 14px 36px;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .hero-cta:hover {
+      background: #0052a3;
+      transform: translateY(-2px);
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* ===== SECTION STYLES ===== */
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+
+    /* ===== FEATURE GRID ===== */
+    .feature-grid {
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
+      gap: 40px;
       justify-content: center;
+      margin-bottom: 60px;
     }
 
-    .modal-body {
-      padding: 30px;
-      overflow-y: auto;
-      max-height: calc(80vh - 80px);
-      color: #333;
+    .feature-card {
+      flex: 1;
+      min-width: 280px;
+      max-width: 340px;
+      text-align: center;
+      padding: 32px 24px;
+      background: #ffffff;
+      border-radius: 24px;
+      transition: all 0.2s;
+      border: 1px solid #f0f0f0;
     }
 
-    .docs-section, .about-section {
-      margin-bottom: 30px;
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
     }
 
-    .docs-section h3, .about-section h3 {
-      font-size: 24px;
-      margin-bottom: 15px;
-      color: #000;
-      border-bottom: 2px solid #000;
-      padding-bottom: 5px;
+    .feature-card .material-icons {
+      font-size: 2.5rem;
+      color: #0066cc;
+      margin-bottom: 20px;
     }
 
-    .docs-section h4 {
-      font-size: 20px;
-      margin: 20px 0 10px;
-      color: #333;
+    .feature-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
-    .docs-section ul, .docs-section ol {
-      margin-left: 20px;
-      margin-bottom: 15px;
+    .feature-card p {
+      color: #6b6b6b;
+      font-size: 0.9rem;
+      line-height: 1.5;
     }
 
-    .docs-section li {
+    /* ===== MIXAMO SECTION ===== */
+    .mixamo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .mixamo-card {
+      border: 1px solid #eaeaea;
+      border-radius: 20px;
+      overflow: hidden;
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .mixamo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+    }
+
+    .mixamo-card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .card-content {
+      padding: 24px;
+    }
+
+    .card-content h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .card-content p {
+      font-size: 0.9rem;
+      color: #5a5a5a;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .card-link {
+      color: #0066cc;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ===== HELP GRID ===== */
+    .help-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid #eaeaea;
+    }
+
+    .help-item h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
       margin-bottom: 8px;
     }
 
-    .library-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 15px 0;
+    .help-item p {
+      font-size: 0.85rem;
+      color: #6b6b6b;
+      margin-bottom: 8px;
     }
 
-    .library-table th, .library-table td {
-      border: 1px solid #ccc;
-      padding: 12px;
-      text-align: left;
-    }
-
-    .library-table th {
-      background: #f0f0f0;
-      font-weight: 600;
-    }
-
-    .library-table a {
+    .help-item a {
       color: #0066cc;
       text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
     }
 
-    .library-table a:hover {
-      text-decoration: underline;
+    /* ===== BANNER SECTION ===== */
+    .banner-section {
+      margin: 48px 0;
+      border: 1px solid #eaeaea;
+      border-radius: 20px;
+      overflow: hidden;
     }
 
-    .note-box {
-      background: #fff8e1;
-      border-left: 4px solid #ffc107;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 0 4px 4px 0;
+    .banner-image img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
-    .about-section p {
-      line-height: 1.6;
-      margin-bottom: 15px;
+    .banner-content {
+      padding: 32px;
+      border-top: 1px solid #eaeaea;
+    }
+
+    .banner-content h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .engine-list {
+      list-style: none;
+    }
+
+    .engine-list li {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .engine-list li:last-child {
+      border-bottom: none;
+    }
+
+    .engine-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .engine-desc {
+      font-size: 0.85rem;
+      color: #6b6b6b;
+    }
+
+    /* ===== TECH GRID ===== */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin: 48px 0;
+    }
+
+    .tech-card {
+      border: 1px solid #eaeaea;
+      border-radius: 20px;
+      padding: 28px;
+    }
+
+    .tech-card h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #0066cc;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tech-card h3 .material-icons {
+      font-size: 1.2rem;
+    }
+
+    .compat-list {
+      list-style: none;
+    }
+
+    .compat-list li {
+      font-size: 0.95rem;
+      color: #4a4a4a;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .compat-list li i {
+      width: 24px;
+      font-size: 1.1rem;
+      color: #0066cc;
+    }
+
+    /* ===== TABLES ===== */
+    .table-wrapper {
+      border: 1px solid #eaeaea;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: #fafafa;
+      font-weight: 600;
+      text-align: left;
+      padding: 14px 20px;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    td {
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      color: #4a4a4a;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    td a {
+      color: #0066cc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .platform-badge {
+      display: inline-block;
+      background: #f0f0f0;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #555;
+    }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+      padding: 140px 64px;
+      text-align: center;
+      position: relative;
+      background: linear-gradient(135deg, #0a1a2f 0%, #0a1f2f 100%);
+      background-image: url('https://i.postimg.cc/h4xLppCk/maya-T.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      background-blend-mode: overlay;
+    }
+
+    .cta-section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 1;
+    }
+
+    .cta-container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-section h2 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 28px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #0066cc;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 16px 48px;
+      border-radius: 48px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .cta-btn:hover {
+      background: #0052a3;
+      transform: scale(1.02);
+    }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      background: #ffffff;
+      border-top: 1px solid #eaeaea;
+    }
+
+    .footer-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-logo img {
+      height: 42px;
+      width: auto;
+      opacity: 0.7;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-social a {
+      color: #9a9a9a;
+      font-size: 1.3rem;
+      transition: color 0.2s;
+    }
+
+    .footer-social a:hover {
+      color: #0066cc;
+    }
+
+    .copyright {
+      color: #aaa;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .site-header {
+        padding: 0 24px;
+        height: 72px;
+      }
+      .logo-area img {
+        height: 52px;
+      }
+      .main-nav {
+        gap: 20px;
+      }
+      .main-nav a {
+        font-size: 0.8rem;
+      }
+      .hero {
+        padding: 80px 24px;
+        min-height: 70vh;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .hero .tagline {
+        font-size: 1rem;
+      }
+      .container {
+        padding: 40px 24px;
+      }
+      .mixamo-grid,
+      .tech-grid,
+      .help-grid {
+        grid-template-columns: 1fr;
+      }
+      .cta-section {
+        padding: 80px 24px;
+      }
+      .cta-section h2 {
+        font-size: 2rem;
+      }
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="brand">
-      <!-- تم حذف div.studio-bar بالكامل -->
-      <div class="logo">
-        <img src="https://i.postimg.cc/Rh3BTjRM/cube.png" alt="Wetbox Engine Logo">
+<header class="site-header">
+  <div class="logo-area">
+    <img src="https://i.postimg.cc/Rh3BTjRM/cube.png" alt="Wetbox Engine">
+  </div>
+  <nav class="main-nav">
+    <a href="#">HOME</a>
+    <a href="https://restudio-games.itch.io/wetbox-game-engine" target="_blank" class="download-nav">DOWNLOAD</a>
+    <a href="#docs">LEARN</a>
+    <a href="#about">COMMUNITY</a>
+  </nav>
+</header>
+
+<main>
+  <!-- Hero Section مع خلفية السيارة -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Build Games. Without Limits.</h1>
+      <div class="tagline">Wetbox Engine is a no-compromise game engine built for developers who</div>
+      <div class="subhead">want full control, real performance, and zero hand-holding.</div>
+      <a href="https://restudio-games.itch.io/wetbox-game-engine" target="_blank" class="hero-cta">
+        GET STARTED NOW <span class="material-icons" style="font-size: 18px;">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Mixamo Section -->
+    <h2 class="section-title">Mixamo Integration</h2>
+    <div class="mixamo-grid">
+      <div class="mixamo-card">
+        <img src="https://i.postimg.cc/638jHqPh/panel1.jpg" alt="Ready to Use Characters">
+        <div class="card-content">
+          <h3>Ready to Use Characters</h3>
+          <p>Browse high-quality 3D characters fully textured and rigged. Use them immediately in your Wetbox projects.</p>
+          <a href="https://www.mixamo.com/#/?page=1&type=Character" class="card-link" target="_blank">Browse characters →</a>
+        </div>
+      </div>
+      <div class="mixamo-card">
+        <img src="https://i.postimg.cc/0yt0Lx7x/panel2.jpg" alt="Automatic Character Rigging">
+        <div class="card-content">
+          <h3>Automatic Character Rigging</h3>
+          <p>Upload custom characters and get a fully rigged skeleton ready for animation.</p>
+          <a href="https://www.mixamo.com/#/" class="card-link" target="_blank">Upload character →</a>
+        </div>
       </div>
     </div>
-    <nav>
-      <a id="docsLink" href="#">Docs</a>
-      <a id="downloadLink" href="https://restudio-games.itch.io/wetbox-game-engine" target="_blank">Download</a>
-      <a id="aboutLink" href="#">About</a>
-    </nav>
-  </header>
 
-  <main>
-    <div class="hero-overlay"></div>
-    <h2>Build Games. Without Limits.</h2>
-    <p>
-      Wetbox Engine is a no-compromise game engine built for developers
-      who want full control, real performance, and zero hand-holding.
-    </p>
-  </main>
+    <div class="help-grid">
+      <div class="help-item">
+        <h4>Documentation</h4>
+        <p>Official Mixamo guide</p>
+        <a href="https://helpx.adobe.com/creative-cloud/help/mixamo-rigging-animation.html" target="_blank">View docs →</a>
+      </div>
+      <div class="help-item">
+        <h4>Tutorials</h4>
+        <p>Video guides</p>
+        <a href="https://www.youtube.com/results?search_query=mixamo+tutorial" target="_blank">Watch →</a>
+      </div>
+      <div class="help-item">
+        <h4>FAQ</h4>
+        <p>Common questions</p>
+        <a href="https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html" target="_blank">Read →</a>
+      </div>
+    </div>
 
-  <footer>
+    <!-- Banner Section -->
+    <div class="banner-section">
+      <div class="banner-image">
+        <img src="https://i.postimg.cc/DzX4BKgH/Unity-vs-Unreal-Engine-vs.avif" alt="Game Engines Comparison">
+      </div>
+      <div class="banner-content">
+        <h3>Use Mixamo with any engine</h3>
+        <ul class="engine-list">
+          <li><div class="engine-name">Unity</div><div class="engine-desc">Full support with Mecanim animation system.</div></li>
+          <li><div class="engine-name">Unreal Engine</div><div class="engine-desc">Native FBX import with retargeting system.</div></li>
+          <li><div class="engine-name">Godot</div><div class="engine-desc">Compatible via FBX and glTF formats.</div></li>
+          <li><div class="engine-name">Blender (UPBGE)</div><div class="engine-desc">Direct download and export support.</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- System + Quick Start (بأيقونات Font Awesome فقط) -->
+    <div class="tech-grid">
+      <div class="tech-card">
+        <h3><span class="material-icons">computer</span> System Compatibility</h3>
+        <ul class="compat-list">
+          <li><i class="fab fa-windows"></i> Windows 10/11</li>
+          <li><i class="fab fa-apple"></i> macOS 11+ (Intel & Apple Silicon)</li>
+          <li><i class="fab fa-linux"></i> Linux (Ubuntu, Fedora)</li>
+        </ul>
+      </div>
+      <div class="tech-card">
+        <h3><span class="material-icons">rocket_launch</span> Quick Start</h3>
+        <ul class="compat-list">
+          <li><span class="material-icons" style="font-size: 1rem; color: #0066cc;">code</span> 1. Install VS Code</li>
+          <li><span class="material-icons" style="font-size: 1rem; color: #0066cc;">extension</span> 2. Choose your libraries</li>
+          <li><span class="material-icons" style="font-size: 1rem; color: #0066cc;">play_arrow</span> 3. Start coding</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Docs Section - Graphics -->
+    <div id="docs">
+      <h2 class="section-title">Graphics Libraries</h2>
+      <div class="table-wrapper">
+         <table>
+          <thead>汽<th>Library</th><th>Platform</th><th>Link</th> </thead>
+          <tbody>
+             <tr><td>PixiJS</td><td><span class="platform-badge">Web</span></td><td><a href="https://pixijs.com">pixijs.com</a></td></tr>
+             <tr><td>WGPU</td><td><span class="platform-badge">Desktop</span></td><td><a href="https://wgpu.rs">wgpu.rs</a></td></tr>
+             <tr><td>Vulkan</td><td><span class="platform-badge">Desktop</span></td><td><a href="https://vulkan.org">vulkan.org</a></td></tr>
+             <tr><td>SFML</td><td><span class="platform-badge">Desktop</span></td><td><a href="https://www.sfml-dev.org">sfml-dev.org</a></td></tr>
+             <tr><td>SDL2</td><td><span class="platform-badge">Desktop</span></td><td><a href="https://www.libsdl.org">libsdl.org</a></td></tr>
+          </tbody>
+         </table>
+      </div>
+
+      <h2 class="section-title">Physics Engines</h2>
+      <div class="table-wrapper">
+         <table>
+          <thead>汽<th>Engine</th><th>Platform</th><th>Link</th> </thead>
+          <tbody>
+             <tr><td>Bullet Physics</td><td><span class="platform-badge">Desktop</span></td><td><a href="https://github.com/bulletphysics/bullet3">GitHub</a></td></tr>
+             <tr><td>Box2D</td><td><span class="platform-badge">Desktop</span></td><td><a href="https://box2d.org">box2d.org</a></td></tr>
+             <tr><td>Planck.js</td><td><span class="platform-badge">Web</span></td><td><a href="https://piqnt.com/planck.js/">planck.js</a></td></tr>
+          </tbody>
+         </table>
+      </div>
+    </div>
+
+    <!-- About Section (مبسطة بدون الإحصائيات المحذوفة) -->
+    <div id="about" style="margin-top: 60px;">
+      <h2 class="section-title">About Wetbox</h2>
+      <div style="max-width: 900px; margin: 0 auto;">
+        <p style="color: #4a4a4a; margin-bottom: 20px; text-align: center; font-size: 1.05rem; line-height: 1.6;"><strong>Wetbox Engine</strong> is a professional game development framework designed for developers who demand full transparency. There is no built‑in library — you assemble your tech stack exactly as your project demands.</p>
+        <p style="color: #4a4a4a; text-align: center; font-size: 1.05rem; line-height: 1.6;">Restudio Games provides starter templates and curated documentation, while the engine itself stays lean, giving you direct access to hardware through industry-standard APIs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="cta-section">
+    <div class="cta-container">
+      <h2>Get started now!</h2>
+      <a href="https://restudio-games.itch.io/wetbox-game-engine" target="_blank" class="cta-btn">
+        DOWNLOAD <span class="material-icons" style="font-size: 18px;">download</span>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-content">
     <div class="footer-logo">
-      <img src="https://i.postimg.cc/8CxvmrL8/swrh-restudio.png" alt="Restudio Logo">
+      <img src="https://i.postimg.cc/8zSg7pcN/swrh-restudio-nskht-(2).png" alt="Restudio">
     </div>
-    <div class="social-links">
-      <a href="https://github.com/restudio-games"><i class="fab fa-github"></i></a>
-      <a href="https://www.tiktok.com/@restudiogames"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://www.instagram.com/restudio_games/"><i class="fab fa-instagram"></i></a>
-      <a href="https://x.com/RESTUDIO_GAMES"><i class="fab fa-x-twitter"></i></a>
-      <a href="https://restudio-games.itch.io/"><i class="fa-brands fa-itch-io"></i></a>
-    </div>
-  </footer>
-
-  <!-- ===== نافذة Docs المنبثقة ===== -->
-  <div id="docsModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Wetbox Docs</h2>
-        <button class="close-btn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="docs-section">
-          <h3>System Compatibility</h3>
-          <ul>
-            <li>Windows</li>
-            <li>macOS</li>
-            <li>Linux</li>
-          </ul>
-          
-          <div class="note-box">
-            <p><strong>Note:</strong> Wetbox requires VS Code as the development environment. Libraries must be installed and configured manually.</p>
-          </div>
-        </div>
-
-        <div class="docs-section">
-          <h3>2D & 3D Libraries</h3>
-          <p>Wetbox does not include libraries; developers must install and configure them manually.</p>
-          
-          <table class="library-table">
-            <thead>
-              <tr>
-                <th>Library</th>
-                <th>Platform</th>
-                <th>Description</th>
-                <th>Official Link</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>PixiJS</td>
-                <td>Web</td>
-                <td>2D graphics engine for interactive games and apps</td>
-                <td><a href="https://pixijs.com" target="_blank">pixijs.com</a></td>
-              </tr>
-              <tr>
-                <td>WGPU</td>
-                <td>Desktop</td>
-                <td>Modern graphics API for 2D & 3D rendering</td>
-                <td><a href="https://wgpu.rs" target="_blank">wgpu.rs</a></td>
-              </tr>
-              <tr>
-                <td>Vulkan</td>
-                <td>Desktop</td>
-                <td>Low-level 3D rendering API with full GPU control</td>
-                <td><a href="https://vulkan.org" target="_blank">vulkan.org</a></td>
-              </tr>
-              <tr>
-                <td>SFML</td>
-                <td>Desktop</td>
-                <td>Lightweight 2D library supporting rendering, audio, and input</td>
-                <td><a href="https://www.sfml-dev.org" target="_blank">sfml-dev.org</a></td>
-              </tr>
-              <tr>
-                <td>SDL</td>
-                <td>Desktop</td>
-                <td>Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics</td>
-                <td><a href="https://www.libsdl.org" target="_blank">libsdl.org</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="docs-section">
-          <h3>Physics Engines</h3>
-          <table class="library-table">
-            <thead>
-              <tr>
-                <th>Engine</th>
-                <th>Platform</th>
-                <th>Description</th>
-                <th>Official Link</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Bullet Physics</td>
-                <td>Desktop</td>
-                <td>3D physics simulation</td>
-                <td><a href="https://github.com/bulletphysics/bullet3" target="_blank">GitHub</a></td>
-              </tr>
-              <tr>
-                <td>Box2D</td>
-                <td>Desktop</td>
-                <td>2D physics simulation</td>
-                <td><a href="https://box2d.org" target="_blank">box2d.org</a></td>
-              </tr>
-              <tr>
-                <td>Planck.js</td>
-                <td>Web (2D)</td>
-                <td>JavaScript version of Box2D for web games</td>
-                <td><a href="https://piqnt.com/planck.js/" target="_blank">piqnt.com/planck.js</a></td>
-              </tr>
-              <tr>
-                <td>Havok (Babylon.js plugin)</td>
-                <td>Web (3D)</td>
-                <td>Physics engine integration with Babylon.js</td>
-                <td><a href="https://doc.babylonjs.com/features/featuresDeepDive/physics/havokPlugin" target="_blank">Docs</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="docs-section">
-          <h3>Web & VR/AR Support</h3>
-          <table class="library-table">
-            <thead>
-              <tr>
-                <th>Technology</th>
-                <th>Platform</th>
-                <th>Description</th>
-                <th>Official Link</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Babylon.js</td>
-                <td>Web</td>
-                <td>3D Web engine</td>
-                <td><a href="https://babylonjs.com" target="_blank">babylonjs.com</a></td>
-              </tr>
-              <tr>
-                <td>React</td>
-                <td>Web</td>
-                <td>UI framework for web applications</td>
-                <td><a href="https://react.dev" target="_blank">react.dev</a></td>
-              </tr>
-              <tr>
-                <td>WebXR</td>
-                <td>Web</td>
-                <td>Web-based VR/AR API</td>
-                <td><a href="https://immersive-web.github.io/webxr/" target="_blank">Docs</a></td>
-              </tr>
-              <tr>
-                <td>OpenXR</td>
-                <td>Desktop</td>
-                <td>VR/AR API for multiple platforms</td>
-                <td><a href="https://www.khronos.org/openxr/" target="_blank">Official Site</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div class="copyright">© 2026 Restudio Games</div>
+    <div class="footer-social">
+      <a href="https://github.com/restudio-games" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://www.tiktok.com/@restudiogames" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.instagram.com/restudio_games/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://x.com/RESTUDIO_GAMES" target="_blank"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://restudio-games.itch.io/" target="_blank"><i class="fab fa-itch-io"></i></a>
     </div>
   </div>
-
-  <!-- ===== نافذة About المنبثقة ===== -->
-  <div id="aboutModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>About Wetbox</h2>
-        <button class="close-btn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="about-section">
-          <p>
-            Wetbox Engine is a game development framework based entirely on VS Code and aimed at serious game developers. 
-            The engine has no built-in libraries; developers install and configure the libraries themselves according to their project needs.
-          </p>
-          <p>
-            Restudio Games' role is to prepare these libraries to make getting started easier, but they are not part of the engine itself.
-          </p>
-          <p>
-            This approach gives developers full control over their game's architecture, performance, and dependencies, allowing for 
-            highly optimized and tailored game development experiences without the overhead of unnecessary features.
-          </p>
-          <p>
-            Wetbox is designed for developers who want to understand every aspect of their game's technical implementation 
-            and prefer to work with raw, unabstracted libraries and APIs.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // عناصر DOM
-    const docsLink = document.getElementById('docsLink');
-    const aboutLink = document.getElementById('aboutLink');
-    const downloadLink = document.getElementById('downloadLink');
-    const docsModal = document.getElementById('docsModal');
-    const aboutModal = document.getElementById('aboutModal');
-    const closeButtons = document.querySelectorAll('.close-btn');
-
-    // فتح نافذة Docs
-    docsLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      docsModal.classList.add('active');
-    });
-
-    // فتح نافذة About
-    aboutLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      aboutModal.classList.add('active');
-    });
-
-    // إغلاق النوافذ عند النقر على زر الإغلاق
-    closeButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        docsModal.classList.remove('active');
-        aboutModal.classList.remove('active');
-      });
-    });
-
-    // إغلاق النوافذ عند النقر خارج المحتوى
-    window.addEventListener('click', function(e) {
-      if (e.target === docsModal) {
-        docsModal.classList.remove('active');
-      }
-      if (e.target === aboutModal) {
-        aboutModal.classList.remove('active');
-      }
-    });
-  </script>
+</footer>
 
 </body>
 </html>
