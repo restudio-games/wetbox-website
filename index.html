@@ -26,7 +26,7 @@
       scroll-behavior: smooth;
     }
 
-    /* ===== HEADER - Flax Engine style ===== */
+    /* ===== HEADER===== */
     .site-header {
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(10px);
@@ -546,6 +546,73 @@
       font-size: 0.8rem;
     }
 
+    /* ===== المربعين الجديدين (Restudio Ecosystem + Blender) ===== */
+    .two-box-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin: 60px 0 40px;
+    }
+
+    .ecosystem-card {
+      background: #ffffff;
+      border: 1px solid #eaeaea;
+      border-radius: 28px;
+      padding: 32px 28px;
+      text-align: center;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.02);
+    }
+
+    .ecosystem-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -10px rgba(0, 102, 204, 0.08);
+      border-color: #0066cc20;
+    }
+
+    .ecosystem-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 24px;
+    }
+
+    .ecosystem-card h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .ecosystem-card p {
+      color: #5a5a5a;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .eco-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f5f9ff;
+      color: #0066cc;
+      padding: 10px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .eco-link i {
+      font-size: 1rem;
+    }
+
+    .eco-link:hover {
+      background: #0066cc10;
+    }
+
     @media (max-width: 900px) {
       .site-header {
         padding: 0 24px;
@@ -575,7 +642,8 @@
       }
       .mixamo-grid,
       .tech-grid,
-      .help-grid {
+      .help-grid,
+      .two-box-grid {
         grid-template-columns: 1fr;
       }
       .cta-section {
@@ -619,7 +687,29 @@
   </div>
 
   <div class="container">
-    <!-- Mixamo Section -->
+    <!-- المربعين الجديدين: Restudio Ecosystem + Blender (وضعناهم هنا كما طلبت) -->
+    <div class="two-box-grid">
+      <!-- Card 1: Restudio Ecosystem -->
+      <div class="ecosystem-card">
+        <img src="https://i.postimg.cc/XNzdSyW3/3dicons-setting-dynamic-color.png" alt="Restudio Ecosystem">
+        <h3>Restudio Ecosystem</h3>
+        <p>Start programming with Restudio Ecosystem. A complete toolchain for creators — from asset pipelines to deployment.</p>
+        <a href="https://restudio-games.itch.io/" target="_blank" class="eco-link">
+          Explore ecosystem <i class="material-icons" style="font-size: 18px;">open_in_new</i>
+        </a>
+      </div>
+      <!-- Card 2: Blender -->
+      <div class="ecosystem-card">
+        <img src="https://i.postimg.cc/J0vkbSxh/3dicons-blender-dynamic-color.png" alt="Blender 3D">
+        <h3>Blender 3D</h3>
+        <p>Design 3D objects in Blender. Full FBX/glTF support — model, rig, animate, and export directly to Wetbox.</p>
+        <a href="https://www.blender.org/" target="_blank" class="eco-link">
+          Learn Blender <i class="material-icons" style="font-size: 18px;">brush</i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mixamo Section (يبقى كما هو) -->
     <h2 class="section-title">Mixamo Integration</h2>
     <div class="mixamo-grid">
       <div class="mixamo-card">
@@ -674,7 +764,7 @@
       </div>
     </div>
 
-    <!-- System + Quick Start (بأيقونات Font Awesome فقط) -->
+    <!-- System + Quick Start -->
     <div class="tech-grid">
       <div class="tech-card">
         <h3><span class="material-icons">computer</span> System Compatibility</h3>
@@ -699,7 +789,7 @@
       <h2 class="section-title">Graphics Libraries</h2>
       <div class="table-wrapper">
          <table>
-          <thead>汽<th>Library</th><th>Platform</th><th>Link</th> </thead>
+          <thead><tr><th>Library</th><th>Platform</th><th>Link</th></tr></thead>
           <tbody>
              <tr><td>PixiJS</td><td><span class="platform-badge">Web</span></td><td><a href="https://pixijs.com">pixijs.com</a></td></tr>
              <tr><td>WGPU</td><td><span class="platform-badge">Desktop</span></td><td><a href="https://wgpu.rs">wgpu.rs</a></td></tr>
@@ -713,7 +803,7 @@
       <h2 class="section-title">Physics Engines</h2>
       <div class="table-wrapper">
          <table>
-          <thead>汽<th>Engine</th><th>Platform</th><th>Link</th> </thead>
+          <thead><tr><th>Engine</th><th>Platform</th><th>Link</th></tr></thead>
           <tbody>
              <tr><td>Bullet Physics</td><td><span class="platform-badge">Desktop</span></td><td><a href="https://github.com/bulletphysics/bullet3">GitHub</a></td></tr>
              <tr><td>Box2D</td><td><span class="platform-badge">Desktop</span></td><td><a href="https://box2d.org">box2d.org</a></td></tr>
@@ -723,7 +813,7 @@
       </div>
     </div>
 
-    <!-- About Section (مبسطة بدون الإحصائيات المحذوفة) -->
+    <!-- About Section -->
     <div id="about" style="margin-top: 60px;">
       <h2 class="section-title">About Wetbox</h2>
       <div style="max-width: 900px; margin: 0 auto;">
