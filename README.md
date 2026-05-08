@@ -1,3 +1,3 @@
 Links
 
-- Website: https://restudio-games.github.io/wetbox-website/
+- Website: https://restudiosoftwarelaboratories.github.io/wetbox-website/
